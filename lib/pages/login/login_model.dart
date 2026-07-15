@@ -1,5 +1,4 @@
 import '/components/button/button_widget.dart';
-import '/components/text_field/text_field_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'login_widget.dart' show LoginWidget;
@@ -8,32 +7,67 @@ import 'package:flutter/material.dart';
 class LoginModel extends FlutterFlowModel<LoginWidget> {
   ///  State fields for stateful widgets in this page.
 
-  // Model for TextField.
-  late TextFieldModel textFieldModel1;
-  // Model for TextField.
-  late TextFieldModel textFieldModel2;
+  final formKey = GlobalKey<FormState>();
+  // State field(s) for TextFieldEmail widget.
+  FocusNode? textFieldEmailFocusNode;
+  TextEditingController? textFieldEmailTextController;
+  String? Function(BuildContext, String?)?
+      textFieldEmailTextControllerValidator;
+  String? _textFieldEmailTextControllerValidator(
+      BuildContext context, String? val) {
+    if (val == null || val.isEmpty) {
+      return 'Correo is required';
+    }
+
+    if (!RegExp(kTextValidatorEmailRegex).hasMatch(val)) {
+      return 'Has to be a valid email address.';
+    }
+    return null;
+  }
+
+  // State field(s) for TextFieldPass widget.
+  FocusNode? textFieldPassFocusNode;
+  TextEditingController? textFieldPassTextController;
+  late bool textFieldPassVisibility;
+  String? Function(BuildContext, String?)? textFieldPassTextControllerValidator;
+  String? _textFieldPassTextControllerValidator(
+      BuildContext context, String? val) {
+    if (val == null || val.isEmpty) {
+      return 'Contraseña is required';
+    }
+
+    if (val.length < 6) {
+      return 'Requires at least 6 characters.';
+    }
+
+    return null;
+  }
+
   // Model for Button.
   late ButtonModel buttonModel1;
   // Model for Button.
   late ButtonModel buttonModel2;
-  // Model for Button.
-  late ButtonModel buttonModel3;
 
   @override
   void initState(BuildContext context) {
-    textFieldModel1 = createModel(context, () => TextFieldModel());
-    textFieldModel2 = createModel(context, () => TextFieldModel());
+    textFieldEmailTextControllerValidator =
+        _textFieldEmailTextControllerValidator;
+    textFieldPassVisibility = false;
+    textFieldPassTextControllerValidator =
+        _textFieldPassTextControllerValidator;
     buttonModel1 = createModel(context, () => ButtonModel());
     buttonModel2 = createModel(context, () => ButtonModel());
-    buttonModel3 = createModel(context, () => ButtonModel());
   }
 
   @override
   void dispose() {
-    textFieldModel1.dispose();
-    textFieldModel2.dispose();
+    textFieldEmailFocusNode?.dispose();
+    textFieldEmailTextController?.dispose();
+
+    textFieldPassFocusNode?.dispose();
+    textFieldPassTextController?.dispose();
+
     buttonModel1.dispose();
     buttonModel2.dispose();
-    buttonModel3.dispose();
   }
 }

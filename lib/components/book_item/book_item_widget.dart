@@ -1,3 +1,4 @@
+import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -15,6 +16,7 @@ class BookItemWidget extends StatefulWidget {
     String? status,
     Color? statusColor,
     String? title,
+    required this.libroSeleccionado,
   })  : this.author = author ?? 'Gabriel García Márquez',
         this.category = category ?? 'Novela',
         this.status = status ?? 'Disponible',
@@ -26,6 +28,7 @@ class BookItemWidget extends StatefulWidget {
   final String status;
   final Color statusColor;
   final String title;
+  final LibrosRow? libroSeleccionado;
 
   @override
   State<BookItemWidget> createState() => _BookItemWidgetState();
@@ -77,18 +80,11 @@ class _BookItemWidgetState extends State<BookItemWidget> {
                 width: 48.0,
                 height: 64.0,
                 decoration: BoxDecoration(
-                  color: valueOrDefault<Color>(
-                    widget.statusColor,
-                    FlutterFlowTheme.of(context).success,
-                  ),
+                  color: widget.statusColor,
                   shape: BoxShape.rectangle,
                 ),
                 child: Icon(
                   Icons.menu_book_rounded,
-                  color: valueOrDefault<Color>(
-                    widget.statusColor,
-                    FlutterFlowTheme.of(context).success,
-                  ),
                   size: 24.0,
                 ),
               ),
@@ -100,10 +96,7 @@ class _BookItemWidgetState extends State<BookItemWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      valueOrDefault<String>(
-                        widget.title,
-                        'Cien años de soledad',
-                      ),
+                      widget.title,
                       maxLines: 1,
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                             font: GoogleFonts.inter(
@@ -123,10 +116,29 @@ class _BookItemWidgetState extends State<BookItemWidget> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      valueOrDefault<String>(
-                        '${widget.author}  ·  ${widget.category}',
-                        'Gabriel García Márquez  ·  Novela',
-                      ),
+                      '${widget.author}  ·  ${widget.category}',
+                      style: FlutterFlowTheme.of(context).bodySmall.override(
+                            font: GoogleFonts.inter(
+                              fontWeight: FlutterFlowTheme.of(context)
+                                  .bodySmall
+                                  .fontWeight,
+                              fontStyle: FlutterFlowTheme.of(context)
+                                  .bodySmall
+                                  .fontStyle,
+                            ),
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                            letterSpacing: 0.0,
+                            fontWeight: FlutterFlowTheme.of(context)
+                                .bodySmall
+                                .fontWeight,
+                            fontStyle: FlutterFlowTheme.of(context)
+                                .bodySmall
+                                .fontStyle,
+                            lineHeight: 1.5,
+                          ),
+                    ),
+                    Text(
+                      '${widget.status}',
                       style: FlutterFlowTheme.of(context).bodySmall.override(
                             font: GoogleFonts.inter(
                               fontWeight: FlutterFlowTheme.of(context)
@@ -160,7 +172,15 @@ class _BookItemWidgetState extends State<BookItemWidget> {
                   size: 24.0,
                 ),
                 onPressed: () async {
-                  context.goNamed(DetallesLibroWidget.routeName);
+                  context.pushNamed(
+                    DetallesLibroWidget.routeName,
+                    queryParameters: {
+                      'libroSeleccionado': serializeParam(
+                        widget.libroSeleccionado,
+                        ParamType.SupabaseRow,
+                      ),
+                    }.withoutNulls,
+                  );
                 },
               ),
             ].divide(SizedBox(width: 16.0)),

@@ -1,3 +1,5 @@
+import '/auth/supabase_auth/auth_util.dart';
+import '/backend/supabase/supabase.dart';
 import '/components/button/button_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -9,7 +11,12 @@ import 'detalles_libro_model.dart';
 export 'detalles_libro_model.dart';
 
 class DetallesLibroWidget extends StatefulWidget {
-  const DetallesLibroWidget({super.key});
+  const DetallesLibroWidget({
+    super.key,
+    required this.libroSeleccionado,
+  });
+
+  final LibrosRow? libroSeleccionado;
 
   static String routeName = 'DetallesLibro';
   static String routePath = '/detallesLibro';
@@ -161,7 +168,10 @@ class _DetallesLibroWidgetState extends State<DetallesLibroWidget> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  '[Título del Libro]',
+                                  valueOrDefault<String>(
+                                    widget.libroSeleccionado?.titulo,
+                                    '[Titulo]',
+                                  ),
                                   style: FlutterFlowTheme.of(context)
                                       .headlineSmall
                                       .override(
@@ -183,7 +193,10 @@ class _DetallesLibroWidgetState extends State<DetallesLibroWidget> {
                                       ),
                                 ),
                                 Text(
-                                  'por [Autor]',
+                                  'por: ${valueOrDefault<String>(
+                                    widget.libroSeleccionado?.autor,
+                                    '[autor]',
+                                  )}',
                                   style: FlutterFlowTheme.of(context)
                                       .titleMedium
                                       .override(
@@ -221,7 +234,10 @@ class _DetallesLibroWidgetState extends State<DetallesLibroWidget> {
                                         16.0, 4.0, 16.0, 4.0),
                                     child: Container(
                                       child: Text(
-                                        '[Categoría]',
+                                        valueOrDefault<String>(
+                                          widget.libroSeleccionado?.categoria,
+                                          '[categoria]',
+                                        ),
                                         style: FlutterFlowTheme.of(context)
                                             .labelMedium
                                             .override(
@@ -237,7 +253,7 @@ class _DetallesLibroWidgetState extends State<DetallesLibroWidget> {
                                               ),
                                               color:
                                                   FlutterFlowTheme.of(context)
-                                                      .onPrimary,
+                                                      .primary,
                                               letterSpacing: 0.0,
                                               fontWeight:
                                                   FlutterFlowTheme.of(context)
@@ -290,7 +306,10 @@ class _DetallesLibroWidgetState extends State<DetallesLibroWidget> {
                                       ),
                                 ),
                                 Text(
-                                  'Esta es una descripción breve del libro que detalla la trama o el contenido principal de la obra seleccionada para que el usuario pueda conocer más antes de reservar.',
+                                  valueOrDefault<String>(
+                                    widget.libroSeleccionado?.descripcion,
+                                    '[descripcion]',
+                                  ),
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -376,14 +395,11 @@ class _DetallesLibroWidgetState extends State<DetallesLibroWidget> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Icon(
-                                            Icons.info_rounded,
-                                            color: FlutterFlowTheme.of(context)
-                                                .success,
-                                            size: 16.0,
-                                          ),
                                           Text(
-                                            '[Disponible]',
+                                            '[${valueOrDefault<String>(
+                                              widget.libroSeleccionado?.estado,
+                                              'estado',
+                                            )}]',
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
@@ -447,29 +463,120 @@ class _DetallesLibroWidgetState extends State<DetallesLibroWidget> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(
-                            flex: 1,
-                            child: wrapWithModel(
-                              model: _model.buttonModel1,
-                              updateCallback: () => safeSetState(() {}),
-                              child: ButtonWidget(
-                                icon: Icon(
-                                  Icons.event_available_rounded,
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                  size: 24.0,
+                          if (widget.libroSeleccionado?.estado == 'Disponible')
+                            Expanded(
+                              flex: 1,
+                              child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  var confirmDialogResponse = await showDialog<
+                                          bool>(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: Text('Confirmar reserva'),
+                                            content: Text(
+                                                '¿Desea reservar este libro?'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, false),
+                                                child: Text('Cancelar'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, true),
+                                                child: Text('Reservar'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ) ??
+                                      false;
+                                  if (confirmDialogResponse) {
+                                    await ReservasTable().insert({
+                                      'libro_id': widget.libroSeleccionado?.id,
+                                      'titulo_libro':
+                                          widget.libroSeleccionado?.titulo,
+                                      'estado': 'Activa',
+                                      'usuario_id': currentUserUid,
+                                    });
+                                    await LibrosTable().update(
+                                      data: {
+                                        'estado': 'Reservado',
+                                      },
+                                      matchingRows: (rows) => rows.eqOrNull(
+                                        'id',
+                                        widget.libroSeleccionado?.id,
+                                      ),
+                                    );
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Reserva realizada correctamente',
+                                          style: FlutterFlowTheme.of(context)
+                                              .labelMedium
+                                              .override(
+                                                font: GoogleFonts.inter(
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .fontStyle,
+                                                ),
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                                letterSpacing: 0.0,
+                                                fontWeight:
+                                                    FlutterFlowTheme.of(context)
+                                                        .labelMedium
+                                                        .fontWeight,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .labelMedium
+                                                        .fontStyle,
+                                              ),
+                                        ),
+                                        duration: Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondary,
+                                      ),
+                                    );
+                                    context.safePop();
+                                  }
+                                },
+                                child: wrapWithModel(
+                                  model: _model.buttonModel1,
+                                  updateCallback: () => safeSetState(() {}),
+                                  child: ButtonWidget(
+                                    icon: Icon(
+                                      Icons.event_available_rounded,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      size: 24.0,
+                                    ),
+                                    iconPresent: true,
+                                    iconEndPresent: false,
+                                    content: 'Reservar',
+                                    variant: 'primary',
+                                    size: 'large',
+                                    fullWidth: false,
+                                    loading: false,
+                                    disabled: false,
+                                  ),
                                 ),
-                                iconPresent: true,
-                                iconEndPresent: false,
-                                content: 'Reservar',
-                                variant: 'primary',
-                                size: 'large',
-                                fullWidth: false,
-                                loading: false,
-                                disabled: false,
                               ),
                             ),
-                          ),
                           InkWell(
                             splashColor: Colors.transparent,
                             focusColor: Colors.transparent,

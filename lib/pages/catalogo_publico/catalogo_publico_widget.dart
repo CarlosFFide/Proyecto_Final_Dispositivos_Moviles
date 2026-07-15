@@ -1,8 +1,10 @@
+import '/backend/supabase/supabase.dart';
 import '/components/book_item/book_item_widget.dart';
-import '/components/text_field/text_field_widget.dart';
+import '/components/text_field_busqueda/text_field_busqueda_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -151,29 +153,6 @@ class _CatalogoPublicoWidgetState extends State<CatalogoPublicoWidget> {
                               ),
                             ],
                           ),
-                          wrapWithModel(
-                            model: _model.textFieldModel,
-                            updateCallback: () => safeSetState(() {}),
-                            child: TextFieldWidget(
-                              label: '',
-                              labelPresent: false,
-                              helper: '',
-                              helperPresent: false,
-                              leadingIcon: Icon(
-                                Icons.search_rounded,
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                size: 24.0,
-                              ),
-                              leadingIconPresent: true,
-                              trailingIconPresent: false,
-                              hint: 'Buscar por título o autor...',
-                              value: '',
-                              onChange: '',
-                              onSubmit: '',
-                              variant: 'filled',
-                              error: false,
-                            ),
-                          ),
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
@@ -181,41 +160,70 @@ class _CatalogoPublicoWidgetState extends State<CatalogoPublicoWidget> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Container(
-                                  height: 34.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    border: Border.all(
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      width: 1.0,
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    _model.categoriaSeleccionada = 'Todos';
+                                    safeSetState(() {});
+                                  },
+                                  child: Container(
+                                    height: 34.0,
+                                    decoration: BoxDecoration(
+                                      color: _model.categoriaSeleccionada ==
+                                              'Todos'
+                                          ? FlutterFlowTheme.of(context)
+                                              .secondaryText
+                                          : FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      border: Border.all(
+                                        color: FlutterFlowTheme.of(context)
+                                            .alternate,
+                                        width: 1.0,
+                                      ),
                                     ),
-                                  ),
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        12.0, 0.0, 12.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.check_rounded,
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                          size: 16.0,
-                                        ),
-                                        Text(
-                                          'Todos',
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelMedium
-                                              .override(
-                                                font: GoogleFonts.inter(
+                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          12.0, 0.0, 12.0, 0.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Todos',
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .override(
+                                                  font: GoogleFonts.inter(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  color:
+                                                      _model.categoriaSeleccionada ==
+                                                              'Todos'
+                                                          ? FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText
+                                                          : FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryText,
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight:
                                                       FlutterFlowTheme.of(
                                                               context)
@@ -226,56 +234,78 @@ class _CatalogoPublicoWidgetState extends State<CatalogoPublicoWidget> {
                                                               context)
                                                           .labelMedium
                                                           .fontStyle,
+                                                  lineHeight: 1.2,
                                                 ),
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                                lineHeight: 1.2,
-                                              ),
-                                        ),
-                                      ].divide(SizedBox(width: 6.0)),
+                                          ),
+                                        ].divide(SizedBox(width: 6.0)),
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  height: 34.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    border: Border.all(
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      width: 1.0,
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    _model.categoriaSeleccionada = 'Novela';
+                                    safeSetState(() {});
+                                  },
+                                  child: Container(
+                                    height: 34.0,
+                                    decoration: BoxDecoration(
+                                      color: _model.categoriaSeleccionada ==
+                                              'Novela'
+                                          ? FlutterFlowTheme.of(context)
+                                              .secondaryText
+                                          : FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      border: Border.all(
+                                        color: FlutterFlowTheme.of(context)
+                                            .alternate,
+                                        width: 1.0,
+                                      ),
                                     ),
-                                  ),
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        12.0, 0.0, 12.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Novela',
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelMedium
-                                              .override(
-                                                font: GoogleFonts.inter(
+                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          12.0, 0.0, 12.0, 0.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Novela',
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .override(
+                                                  font: GoogleFonts.inter(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  color:
+                                                      _model.categoriaSeleccionada ==
+                                                              'Novela'
+                                                          ? FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText
+                                                          : FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryText,
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight:
                                                       FlutterFlowTheme.of(
                                                               context)
@@ -286,56 +316,78 @@ class _CatalogoPublicoWidgetState extends State<CatalogoPublicoWidget> {
                                                               context)
                                                           .labelMedium
                                                           .fontStyle,
+                                                  lineHeight: 1.2,
                                                 ),
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                                lineHeight: 1.2,
-                                              ),
-                                        ),
-                                      ].divide(SizedBox(width: 6.0)),
+                                          ),
+                                        ].divide(SizedBox(width: 6.0)),
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  height: 34.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    border: Border.all(
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      width: 1.0,
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    _model.categoriaSeleccionada = 'Historia';
+                                    safeSetState(() {});
+                                  },
+                                  child: Container(
+                                    height: 34.0,
+                                    decoration: BoxDecoration(
+                                      color: _model.categoriaSeleccionada ==
+                                              'Historia'
+                                          ? FlutterFlowTheme.of(context)
+                                              .secondaryText
+                                          : FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      border: Border.all(
+                                        color: FlutterFlowTheme.of(context)
+                                            .alternate,
+                                        width: 1.0,
+                                      ),
                                     ),
-                                  ),
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        12.0, 0.0, 12.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Historia',
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelMedium
-                                              .override(
-                                                font: GoogleFonts.inter(
+                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          12.0, 0.0, 12.0, 0.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Historia',
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .override(
+                                                  font: GoogleFonts.inter(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  color:
+                                                      _model.categoriaSeleccionada ==
+                                                              'Historia'
+                                                          ? FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText
+                                                          : FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryText,
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight:
                                                       FlutterFlowTheme.of(
                                                               context)
@@ -346,56 +398,78 @@ class _CatalogoPublicoWidgetState extends State<CatalogoPublicoWidget> {
                                                               context)
                                                           .labelMedium
                                                           .fontStyle,
+                                                  lineHeight: 1.2,
                                                 ),
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                                lineHeight: 1.2,
-                                              ),
-                                        ),
-                                      ].divide(SizedBox(width: 6.0)),
+                                          ),
+                                        ].divide(SizedBox(width: 6.0)),
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  height: 34.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    border: Border.all(
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      width: 1.0,
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    _model.categoriaSeleccionada = 'Literatura';
+                                    safeSetState(() {});
+                                  },
+                                  child: Container(
+                                    height: 34.0,
+                                    decoration: BoxDecoration(
+                                      color: _model.categoriaSeleccionada ==
+                                              'Literatura'
+                                          ? FlutterFlowTheme.of(context)
+                                              .secondaryText
+                                          : FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      border: Border.all(
+                                        color: FlutterFlowTheme.of(context)
+                                            .alternate,
+                                        width: 1.0,
+                                      ),
                                     ),
-                                  ),
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        12.0, 0.0, 12.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Tecnología',
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelMedium
-                                              .override(
-                                                font: GoogleFonts.inter(
+                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          12.0, 0.0, 12.0, 0.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Literatura',
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .override(
+                                                  font: GoogleFonts.inter(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  color:
+                                                      _model.categoriaSeleccionada ==
+                                                              'Literatura'
+                                                          ? FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText
+                                                          : FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryText,
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight:
                                                       FlutterFlowTheme.of(
                                                               context)
@@ -406,88 +480,37 @@ class _CatalogoPublicoWidgetState extends State<CatalogoPublicoWidget> {
                                                               context)
                                                           .labelMedium
                                                           .fontStyle,
+                                                  lineHeight: 1.2,
                                                 ),
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                                lineHeight: 1.2,
-                                              ),
-                                        ),
-                                      ].divide(SizedBox(width: 6.0)),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: 34.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    border: Border.all(
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        12.0, 0.0, 12.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Literatura',
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelMedium
-                                              .override(
-                                                font: GoogleFonts.inter(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontStyle,
-                                                ),
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                                lineHeight: 1.2,
-                                              ),
-                                        ),
-                                      ].divide(SizedBox(width: 6.0)),
+                                          ),
+                                        ].divide(SizedBox(width: 6.0)),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ].divide(SizedBox(width: 8.0)),
+                            ),
+                          ),
+                          wrapWithModel(
+                            model: _model.textFieldBusquedaModel,
+                            updateCallback: () => safeSetState(() {}),
+                            child: TextFieldBusquedaWidget(
+                              helper: '',
+                              helperPresent: false,
+                              leadingIcon: Icon(
+                                Icons.search,
+                              ),
+                              leadingIconPresent: false,
+                              trailingIcon: Icon(
+                                Icons.search,
+                              ),
+                              trailingIconPresent: false,
+                              hint: 'Busque por titulo o autor...',
+                              error: false,
+                              alCambiarTexto: (texto) async {
+                                _model.textoBusqueda = texto;
+                                safeSetState(() {});
+                              },
                             ),
                           ),
                         ].divide(SizedBox(height: 16.0)),
@@ -507,126 +530,68 @@ class _CatalogoPublicoWidgetState extends State<CatalogoPublicoWidget> {
             Expanded(
               flex: 1,
               child: Container(
-                child: SingleChildScrollView(
-                  primary: false,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(24.0),
-                        child: Container(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              wrapWithModel(
-                                model: _model.bookItemModel1,
-                                updateCallback: () => safeSetState(() {}),
-                                child: BookItemWidget(
-                                  author: 'Gabriel García Márquez',
-                                  category: 'Novela',
-                                  status: 'Disponible',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).success,
-                                  title: 'Cien años de soledad',
-                                ),
-                              ),
-                              wrapWithModel(
-                                model: _model.bookItemModel2,
-                                updateCallback: () => safeSetState(() {}),
-                                child: BookItemWidget(
-                                  author: 'Stephen Hawking',
-                                  category: 'Ciencia',
-                                  status: 'Reservado',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).warning,
-                                  title: 'Breve historia del tiempo',
-                                ),
-                              ),
-                              wrapWithModel(
-                                model: _model.bookItemModel3,
-                                updateCallback: () => safeSetState(() {}),
-                                child: BookItemWidget(
-                                  author: 'Dan Brown',
-                                  category: 'Novela',
-                                  status: 'Prestado',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).error,
-                                  title: 'El código Da Vinci',
-                                ),
-                              ),
-                              wrapWithModel(
-                                model: _model.bookItemModel4,
-                                updateCallback: () => safeSetState(() {}),
-                                child: BookItemWidget(
-                                  author: 'Miguel de Cervantes',
-                                  category: 'Literatura',
-                                  status: 'Disponible',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).success,
-                                  title: 'Don Quijote de la Mancha',
-                                ),
-                              ),
-                              wrapWithModel(
-                                model: _model.bookItemModel5,
-                                updateCallback: () => safeSetState(() {}),
-                                child: BookItemWidget(
-                                  author: 'Yuval Noah Harari',
-                                  category: 'Historia',
-                                  status: 'Disponible',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).success,
-                                  title: 'Sapiens: De animales a dioses',
-                                ),
-                              ),
-                              wrapWithModel(
-                                model: _model.bookItemModel6,
-                                updateCallback: () => safeSetState(() {}),
-                                child: BookItemWidget(
-                                  author: 'Robert C. Martin',
-                                  category: 'Tecnología',
-                                  status: 'Prestado',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).error,
-                                  title: 'Clean Code',
-                                ),
-                              ),
-                              wrapWithModel(
-                                model: _model.bookItemModel7,
-                                updateCallback: () => safeSetState(() {}),
-                                child: BookItemWidget(
-                                  author: 'Carlos Ruiz Zafón',
-                                  category: 'Novela',
-                                  status: 'Disponible',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).success,
-                                  title: 'La sombra del viento',
-                                ),
-                              ),
-                              wrapWithModel(
-                                model: _model.bookItemModel8,
-                                updateCallback: () => safeSetState(() {}),
-                                child: BookItemWidget(
-                                  author: 'Immanuel Kant',
-                                  category: 'Filosofía',
-                                  status: 'Reservado',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).warning,
-                                  title: 'Crítica de la razón pura',
-                                ),
-                              ),
-                              Container(
-                                height: 20.0,
-                              ),
-                            ].divide(SizedBox(height: 16.0)),
+                child: FutureBuilder<List<LibrosRow>>(
+                  future: LibrosTable().queryRows(
+                    queryFn: (q) => q.order('titulo'),
+                  ),
+                  builder: (context, snapshot) {
+                    // Customize what your widget looks like when it's loading.
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: SizedBox(
+                          width: 50.0,
+                          height: 50.0,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              FlutterFlowTheme.of(context).primary,
+                            ),
                           ),
                         ),
+                      );
+                    }
+                    List<LibrosRow> columnLibrosRowList = snapshot.data!;
+
+                    return SingleChildScrollView(
+                      primary: false,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: List.generate(columnLibrosRowList.length,
+                            (columnIndex) {
+                          final columnLibrosRow =
+                              columnLibrosRowList[columnIndex];
+                          return Padding(
+                            padding: EdgeInsets.all(24.0),
+                            child: Container(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  if (functions.coincideBusqueda(
+                                      columnLibrosRow.autor,
+                                      columnLibrosRow.titulo,
+                                      _model.textoBusqueda,
+                                      columnLibrosRow.categoria,
+                                      _model.categoriaSeleccionada))
+                                    BookItemWidget(
+                                      key: Key(
+                                          'Key209_${columnIndex}_of_${columnLibrosRowList.length}'),
+                                      author: columnLibrosRow.autor,
+                                      category: columnLibrosRow.categoria,
+                                      status: columnLibrosRow.estado,
+                                      title: columnLibrosRow.titulo,
+                                      libroSeleccionado: columnLibrosRow,
+                                    ),
+                                ].divide(SizedBox(height: 16.0)),
+                              ),
+                            ),
+                          );
+                        }),
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ),
             ),
