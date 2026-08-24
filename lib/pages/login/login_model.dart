@@ -1,3 +1,4 @@
+import '/backend/supabase/supabase.dart';
 import '/components/button/button_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
@@ -45,6 +46,8 @@ class LoginModel extends FlutterFlowModel<LoginWidget> {
 
   // Model for Button.
   late ButtonModel buttonModel1;
+  // Stores action output result for [Backend Call - Query Rows] action in Button widget.
+  List<UsersRow>? usuarioActual;
   // Model for Button.
   late ButtonModel buttonModel2;
 

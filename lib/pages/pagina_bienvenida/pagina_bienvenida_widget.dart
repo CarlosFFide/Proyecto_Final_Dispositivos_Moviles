@@ -1,9 +1,12 @@
+import '/auth/supabase_auth/auth_util.dart';
+import '/backend/supabase/supabase.dart';
 import '/components/button/button_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'pagina_bienvenida_model.dart';
 export 'pagina_bienvenida_model.dart';
@@ -27,6 +30,22 @@ class _PaginaBienvenidaWidgetState extends State<PaginaBienvenidaWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => PaginaBienvenidaModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.usuarioActual = await UsersTable().queryRows(
+        queryFn: (q) => q.eqOrNull(
+          'id',
+          currentUserUid,
+        ),
+      );
+      if (_model.usuarioActual?.firstOrNull?.rol == 'administrador') {
+        if (Navigator.of(context).canPop()) {
+          context.pop();
+        }
+        context.pushNamed(PanelAdministradorWidget.routeName);
+      }
+    });
   }
 
   @override

@@ -15,8 +15,6 @@ class PanelAdministradorModel
   late AdminStatModel adminStatModel2;
   // Model for AdminStat.
   late AdminStatModel adminStatModel3;
-  // Model for AdminStat.
-  late AdminStatModel adminStatModel4;
   // Model for AdminNavTile.
   late AdminNavTileModel adminNavTileModel1;
   // Model for AdminNavTile.
@@ -27,7 +25,6 @@ class PanelAdministradorModel
     adminStatModel1 = createModel(context, () => AdminStatModel());
     adminStatModel2 = createModel(context, () => AdminStatModel());
     adminStatModel3 = createModel(context, () => AdminStatModel());
-    adminStatModel4 = createModel(context, () => AdminStatModel());
     adminNavTileModel1 = createModel(context, () => AdminNavTileModel());
     adminNavTileModel2 = createModel(context, () => AdminNavTileModel());
   }
@@ -37,7 +34,6 @@ class PanelAdministradorModel
     adminStatModel1.dispose();
     adminStatModel2.dispose();
     adminStatModel3.dispose();
-    adminStatModel4.dispose();
     adminNavTileModel1.dispose();
     adminNavTileModel2.dispose();
   }

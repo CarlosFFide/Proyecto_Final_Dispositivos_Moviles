@@ -66,10 +66,7 @@ class _AdminStatWidgetState extends State<AdminStatWidget> {
             children: [
               widget.icon!,
               Text(
-                valueOrDefault<String>(
-                  widget.value,
-                  '124',
-                ),
+                widget.value,
                 style: FlutterFlowTheme.of(context).headlineMedium.override(
                       font: GoogleFonts.inter(
                         fontWeight: FontWeight.bold,

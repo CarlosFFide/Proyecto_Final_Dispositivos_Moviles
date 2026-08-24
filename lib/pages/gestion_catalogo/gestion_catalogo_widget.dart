@@ -1,6 +1,5 @@
-import '/components/admin_book_card/admin_book_card_widget.dart';
+import '/backend/supabase/supabase.dart';
 import '/components/button/button_widget.dart';
-import '/components/text_field/text_field_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -139,79 +138,60 @@ class _GestionCatalogoWidgetState extends State<GestionCatalogoWidget> {
                                 buttonSize: 40.0,
                                 fillColor: Colors.transparent,
                                 icon: Icon(
-                                  Icons.logout_rounded,
-                                  color: FlutterFlowTheme.of(context).error,
+                                  Icons.home_rounded,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
                                   size: 24.0,
                                 ),
                                 onPressed: () async {
-                                  context.goNamed(LoginWidget.routeName);
+                                  context.goNamed(
+                                      PaginaBienvenidaWidget.routeName);
                                 },
                               ),
                             ],
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: wrapWithModel(
-                                  model: _model.textFieldModel,
-                                  updateCallback: () => safeSetState(() {}),
-                                  child: TextFieldWidget(
-                                    label: '',
-                                    labelPresent: false,
-                                    helper: '',
-                                    helperPresent: false,
-                                    leadingIcon: Icon(
-                                      Icons.search,
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      size: 24.0,
+                          Align(
+                            alignment: AlignmentDirectional(0.0, 0.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Align(
+                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      context.pushNamed(
+                                          RegistrarLibroWidget.routeName);
+                                    },
+                                    child: wrapWithModel(
+                                      model: _model.buttonModel1,
+                                      updateCallback: () => safeSetState(() {}),
+                                      child: ButtonWidget(
+                                        icon: Icon(
+                                          Icons.add,
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                          size: 24.0,
+                                        ),
+                                        iconPresent: true,
+                                        iconEndPresent: false,
+                                        content: 'Registrar libro',
+                                        variant: 'primary',
+                                        size: 'medium',
+                                        fullWidth: false,
+                                        loading: false,
+                                        disabled: false,
+                                      ),
                                     ),
-                                    leadingIconPresent: true,
-                                    trailingIconPresent: false,
-                                    hint: 'Buscar por título o autor...',
-                                    value: '',
-                                    onChange: '',
-                                    onSubmit: '',
-                                    variant: 'filled',
-                                    error: false,
                                   ),
                                 ),
-                              ),
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  context.pushNamed(
-                                      RegistrarLibroWidget.routeName);
-                                },
-                                child: wrapWithModel(
-                                  model: _model.buttonModel1,
-                                  updateCallback: () => safeSetState(() {}),
-                                  child: ButtonWidget(
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      size: 24.0,
-                                    ),
-                                    iconPresent: true,
-                                    iconEndPresent: false,
-                                    content: 'Registrar libro',
-                                    variant: 'primary',
-                                    size: 'medium',
-                                    fullWidth: false,
-                                    loading: false,
-                                    disabled: false,
-                                  ),
-                                ),
-                              ),
-                            ].divide(SizedBox(width: 16.0)),
+                              ].divide(SizedBox(width: 16.0)),
+                            ),
                           ),
                         ].divide(SizedBox(height: 16.0)),
                       ),
@@ -245,93 +225,220 @@ class _GestionCatalogoWidgetState extends State<GestionCatalogoWidget> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              wrapWithModel(
-                                model: _model.adminBookCardModel1,
-                                updateCallback: () => safeSetState(() {}),
-                                child: AdminBookCardWidget(
-                                  author: 'Gabriel García Márquez',
-                                  status: 'Disponible',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).success,
-                                  title: 'Cien años de soledad',
+                              FutureBuilder<List<LibrosRow>>(
+                                future: LibrosTable().queryRows(
+                                  queryFn: (q) => q,
                                 ),
-                              ),
-                              wrapWithModel(
-                                model: _model.adminBookCardModel2,
-                                updateCallback: () => safeSetState(() {}),
-                                child: AdminBookCardWidget(
-                                  author: 'Miguel de Cervantes',
-                                  status: 'Prestado',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).warning,
-                                  title: 'Don Quijote de la Mancha',
-                                ),
-                              ),
-                              wrapWithModel(
-                                model: _model.adminBookCardModel3,
-                                updateCallback: () => safeSetState(() {}),
-                                child: AdminBookCardWidget(
-                                  author: 'George Orwell',
-                                  status: 'Reservado',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).tertiary,
-                                  title: '1984',
-                                ),
-                              ),
-                              wrapWithModel(
-                                model: _model.adminBookCardModel4,
-                                updateCallback: () => safeSetState(() {}),
-                                child: AdminBookCardWidget(
-                                  author: 'Julio Cortázar',
-                                  status: 'Disponible',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).success,
-                                  title: 'Rayuela',
-                                ),
-                              ),
-                              wrapWithModel(
-                                model: _model.adminBookCardModel5,
-                                updateCallback: () => safeSetState(() {}),
-                                child: AdminBookCardWidget(
-                                  author: 'Jorge Luis Borges',
-                                  status: 'Disponible',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).success,
-                                  title: 'El Aleph',
-                                ),
-                              ),
-                              wrapWithModel(
-                                model: _model.adminBookCardModel6,
-                                updateCallback: () => safeSetState(() {}),
-                                child: AdminBookCardWidget(
-                                  author: 'Gabriel García Márquez',
-                                  status: 'Prestado',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).warning,
-                                  title: 'Crónica de una muerte anunciada',
-                                ),
-                              ),
-                              wrapWithModel(
-                                model: _model.adminBookCardModel7,
-                                updateCallback: () => safeSetState(() {}),
-                                child: AdminBookCardWidget(
-                                  author: 'Ray Bradbury',
-                                  status: 'Disponible',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).success,
-                                  title: 'Fahrenheit 451',
-                                ),
-                              ),
-                              wrapWithModel(
-                                model: _model.adminBookCardModel8,
-                                updateCallback: () => safeSetState(() {}),
-                                child: AdminBookCardWidget(
-                                  author: 'Mario Vargas Llosa',
-                                  status: 'Reservado',
-                                  statusColor:
-                                      FlutterFlowTheme.of(context).tertiary,
-                                  title: 'La ciudad y los perros',
-                                ),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  List<LibrosRow> listViewLibrosRowList =
+                                      snapshot.data!;
+
+                                  return ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: listViewLibrosRowList.length,
+                                    itemBuilder: (context, listViewIndex) {
+                                      final listViewLibrosRow =
+                                          listViewLibrosRowList[listViewIndex];
+                                      return Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                            shape: BoxShape.rectangle,
+                                            border: Border.all(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .alternate,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Container(
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: 48.0,
+                                                    height: 64.0,
+                                                    decoration: BoxDecoration(
+                                                      color: FlutterFlowTheme
+                                                              .of(context)
+                                                          .secondaryBackground,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4.0),
+                                                      shape: BoxShape.rectangle,
+                                                    ),
+                                                    alignment:
+                                                        AlignmentDirectional(
+                                                            0.0, 0.0),
+                                                    child: Icon(
+                                                      Icons.book_rounded,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryText,
+                                                      size: 24.0,
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          listViewLibrosRow
+                                                              .titulo,
+                                                          maxLines: 1,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .titleMedium
+                                                              .override(
+                                                                font:
+                                                                    GoogleFonts
+                                                                        .inter(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleMedium
+                                                                      .fontStyle,
+                                                                ),
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontStyle: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .fontStyle,
+                                                                lineHeight: 1.4,
+                                                              ),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                        Text(
+                                                          listViewLibrosRow
+                                                              .autor,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodySmall
+                                                              .override(
+                                                                font:
+                                                                    GoogleFonts
+                                                                        .inter(
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodySmall
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodySmall
+                                                                      .fontStyle,
+                                                                ),
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryText,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                fontWeight: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodySmall
+                                                                    .fontWeight,
+                                                                fontStyle: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodySmall
+                                                                    .fontStyle,
+                                                                lineHeight: 1.5,
+                                                              ),
+                                                        ),
+                                                      ].divide(SizedBox(
+                                                          height: 4.0)),
+                                                    ),
+                                                  ),
+                                                  InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onTap: () async {
+                                                      context.pushNamed(
+                                                        RegistrarLibroWidget
+                                                            .routeName,
+                                                        queryParameters: {
+                                                          'libroSeleccionado':
+                                                              serializeParam(
+                                                            listViewLibrosRow,
+                                                            ParamType
+                                                                .SupabaseRow,
+                                                          ),
+                                                        }.withoutNulls,
+                                                      );
+                                                    },
+                                                    child: ButtonWidget(
+                                                      key: Key(
+                                                          'Keyqui_${listViewIndex}_of_${listViewLibrosRowList.length}'),
+                                                      iconPresent: false,
+                                                      iconEndPresent: false,
+                                                      content: 'Editar',
+                                                      variant: 'outline',
+                                                      size: 'small',
+                                                      fullWidth: false,
+                                                      loading: false,
+                                                      disabled: false,
+                                                    ),
+                                                  ),
+                                                ].divide(SizedBox(width: 16.0)),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
                               ),
                             ].divide(SizedBox(height: 16.0)),
                           ),
@@ -340,87 +447,6 @@ class _GestionCatalogoWidgetState extends State<GestionCatalogoWidget> {
                     ],
                   ),
                 ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).secondaryBackground,
-                shape: BoxShape.rectangle,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    height: 1.0,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).alternate,
-                      shape: BoxShape.rectangle,
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(24.0, 16.0, 24.0, 16.0),
-                    child: Container(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Total: 8 libros registrados',
-                            style: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  font: GoogleFonts.inter(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                  lineHeight: 1.2,
-                                ),
-                          ),
-                          InkWell(
-                            splashColor: Colors.transparent,
-                            focusColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () async {
-                              context.pushNamed(
-                                  PanelAdministradorWidget.routeName);
-                            },
-                            child: wrapWithModel(
-                              model: _model.buttonModel2,
-                              updateCallback: () => safeSetState(() {}),
-                              child: ButtonWidget(
-                                iconPresent: false,
-                                iconEndPresent: false,
-                                content: 'Volver al Panel',
-                                variant: 'ghost',
-                                size: 'medium',
-                                fullWidth: false,
-                                loading: false,
-                                disabled: false,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ),
           ],

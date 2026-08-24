@@ -1,6 +1,7 @@
-import '/components/button/button_widget.dart';
+import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
+import 'dart:async';
 import 'reservaciones_usuario_widget.dart' show ReservacionesUsuarioWidget;
 import 'package:flutter/material.dart';
 
@@ -8,24 +9,27 @@ class ReservacionesUsuarioModel
     extends FlutterFlowModel<ReservacionesUsuarioWidget> {
   ///  State fields for stateful widgets in this page.
 
-  // Model for Button.
-  late ButtonModel buttonModel1;
-  // Model for Button.
-  late ButtonModel buttonModel2;
-  // Model for Button.
-  late ButtonModel buttonModel3;
+  Completer<List<ReservasRow>>? requestCompleter;
 
   @override
-  void initState(BuildContext context) {
-    buttonModel1 = createModel(context, () => ButtonModel());
-    buttonModel2 = createModel(context, () => ButtonModel());
-    buttonModel3 = createModel(context, () => ButtonModel());
-  }
+  void initState(BuildContext context) {}
 
   @override
-  void dispose() {
-    buttonModel1.dispose();
-    buttonModel2.dispose();
-    buttonModel3.dispose();
+  void dispose() {}
+
+  /// Additional helper methods.
+  Future waitForRequestCompleted({
+    double minWait = 0,
+    double maxWait = double.infinity,
+  }) async {
+    final stopwatch = Stopwatch()..start();
+    while (true) {
+      await Future.delayed(Duration(milliseconds: 50));
+      final timeElapsed = stopwatch.elapsedMilliseconds;
+      final requestComplete = requestCompleter?.isCompleted ?? false;
+      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
+        break;
+      }
+    }
   }
 }

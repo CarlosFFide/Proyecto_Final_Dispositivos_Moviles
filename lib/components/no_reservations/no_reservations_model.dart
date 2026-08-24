@@ -1,9 +1,8 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import '/index.dart';
-import 'historial_widget.dart' show HistorialWidget;
+import 'no_reservations_widget.dart' show NoReservationsWidget;
 import 'package:flutter/material.dart';
 
-class HistorialModel extends FlutterFlowModel<HistorialWidget> {
+class NoReservationsModel extends FlutterFlowModel<NoReservationsWidget> {
   @override
   void initState(BuildContext context) {}
 

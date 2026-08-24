@@ -1,8 +1,8 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import 'history_item_widget.dart' show HistoryItemWidget;
+import 'no_historial_widget.dart' show NoHistorialWidget;
 import 'package:flutter/material.dart';
 
-class HistoryItemModel extends FlutterFlowModel<HistoryItemWidget> {
+class NoHistorialModel extends FlutterFlowModel<NoHistorialWidget> {
   @override
   void initState(BuildContext context) {}
 

@@ -140,7 +140,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: RegistrarLibroWidget.routeName,
           path: RegistrarLibroWidget.routePath,
-          builder: (context, params) => RegistrarLibroWidget(),
+          builder: (context, params) => RegistrarLibroWidget(
+            libroSeleccionado: params.getParam<LibrosRow>(
+              'libroSeleccionado',
+              ParamType.SupabaseRow,
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

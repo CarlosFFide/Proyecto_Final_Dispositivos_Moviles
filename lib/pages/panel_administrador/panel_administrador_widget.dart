@@ -1,3 +1,4 @@
+import '/backend/supabase/supabase.dart';
 import '/components/admin_nav_tile/admin_nav_tile_widget.dart';
 import '/components/admin_stat/admin_stat_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -134,7 +135,7 @@ class _PanelAdministradorWidgetState extends State<PanelAdministradorWidget> {
                               fillColor: Colors.transparent,
                               icon: Icon(
                                 Icons.logout_rounded,
-                                color: FlutterFlowTheme.of(context).error,
+                                color: FlutterFlowTheme.of(context).primary,
                                 size: 24.0,
                               ),
                               onPressed: () async {
@@ -192,44 +193,62 @@ class _PanelAdministradorWidgetState extends State<PanelAdministradorWidget> {
                                 lineHeight: 1.2,
                               ),
                         ),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: wrapWithModel(
-                                model: _model.adminStatModel1,
-                                updateCallback: () => safeSetState(() {}),
-                                child: AdminStatWidget(
-                                  icon: Icon(
-                                    Icons.library_books_rounded,
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    size: 24.0,
+                        Align(
+                          alignment: AlignmentDirectional(0.0, 0.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Align(
+                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                  child: FutureBuilder<List<LibrosRow>>(
+                                    future: LibrosTable().queryRows(
+                                      queryFn: (q) => q,
+                                    ),
+                                    builder: (context, snapshot) {
+                                      // Customize what your widget looks like when it's loading.
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: SizedBox(
+                                            width: 50.0,
+                                            height: 50.0,
+                                            child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      List<LibrosRow> adminStatLibrosRowList =
+                                          snapshot.data!;
+
+                                      return wrapWithModel(
+                                        model: _model.adminStatModel1,
+                                        updateCallback: () =>
+                                            safeSetState(() {}),
+                                        child: AdminStatWidget(
+                                          icon: Icon(
+                                            Icons.library_books_rounded,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            size: 24.0,
+                                          ),
+                                          label: 'Libros registrados',
+                                          value: adminStatLibrosRowList.length
+                                              .toString(),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                  label: 'Libros registrados',
-                                  value: '124',
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: wrapWithModel(
-                                model: _model.adminStatModel2,
-                                updateCallback: () => safeSetState(() {}),
-                                child: AdminStatWidget(
-                                  icon: Icon(
-                                    Icons.check_circle_outline_rounded,
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    size: 24.0,
-                                  ),
-                                  label: 'Disponibles',
-                                  value: '85',
-                                ),
-                              ),
-                            ),
-                          ].divide(SizedBox(width: 16.0)),
+                            ].divide(SizedBox(width: 16.0)),
+                          ),
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.max,
@@ -238,34 +257,96 @@ class _PanelAdministradorWidgetState extends State<PanelAdministradorWidget> {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: wrapWithModel(
-                                model: _model.adminStatModel3,
-                                updateCallback: () => safeSetState(() {}),
-                                child: AdminStatWidget(
-                                  icon: Icon(
-                                    Icons.swap_horiz_rounded,
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    size: 24.0,
+                              child: FutureBuilder<List<LibrosRow>>(
+                                future: LibrosTable().queryRows(
+                                  queryFn: (q) => q.eqOrNull(
+                                    'estado',
+                                    'Reservado',
                                   ),
-                                  label: 'Prestados',
-                                  value: '22',
                                 ),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  List<LibrosRow> adminStatLibrosRowList =
+                                      snapshot.data!;
+
+                                  return wrapWithModel(
+                                    model: _model.adminStatModel2,
+                                    updateCallback: () => safeSetState(() {}),
+                                    child: AdminStatWidget(
+                                      icon: Icon(
+                                        Icons.swap_horiz_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primary,
+                                        size: 24.0,
+                                      ),
+                                      label: 'Reservados',
+                                      value: adminStatLibrosRowList.length
+                                          .toString(),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                             Expanded(
                               flex: 1,
-                              child: wrapWithModel(
-                                model: _model.adminStatModel4,
-                                updateCallback: () => safeSetState(() {}),
-                                child: AdminStatWidget(
-                                  icon: Icon(
-                                    Icons.schedule_rounded,
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    size: 24.0,
+                              child: FutureBuilder<List<LibrosRow>>(
+                                future: LibrosTable().queryRows(
+                                  queryFn: (q) => q.eqOrNull(
+                                    'estado',
+                                    'Disponible',
                                   ),
-                                  label: 'Reservados',
-                                  value: '17',
                                 ),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  List<LibrosRow> adminStatLibrosRowList =
+                                      snapshot.data!;
+
+                                  return wrapWithModel(
+                                    model: _model.adminStatModel3,
+                                    updateCallback: () => safeSetState(() {}),
+                                    child: AdminStatWidget(
+                                      icon: Icon(
+                                        Icons.check_circle_outline_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primary,
+                                        size: 24.0,
+                                      ),
+                                      label: 'Disponibles',
+                                      value: adminStatLibrosRowList.length
+                                          .toString(),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ].divide(SizedBox(width: 16.0)),
@@ -307,30 +388,50 @@ class _PanelAdministradorWidgetState extends State<PanelAdministradorWidget> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            wrapWithModel(
-                              model: _model.adminNavTileModel1,
-                              updateCallback: () => safeSetState(() {}),
-                              child: AdminNavTileWidget(
-                                icon: Icon(
-                                  Icons.list_alt_rounded,
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  size: 24.0,
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                context
+                                    .pushNamed(GestionCatalogoWidget.routeName);
+                              },
+                              child: wrapWithModel(
+                                model: _model.adminNavTileModel1,
+                                updateCallback: () => safeSetState(() {}),
+                                child: AdminNavTileWidget(
+                                  icon: Icon(
+                                    Icons.list_alt_rounded,
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    size: 24.0,
+                                  ),
+                                  target: 'ManageCatalog',
+                                  title: 'Gestionar catálogo',
                                 ),
-                                target: 'ManageCatalog',
-                                title: 'Gestionar catálogo',
                               ),
                             ),
-                            wrapWithModel(
-                              model: _model.adminNavTileModel2,
-                              updateCallback: () => safeSetState(() {}),
-                              child: AdminNavTileWidget(
-                                icon: Icon(
-                                  Icons.add_box_rounded,
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  size: 24.0,
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                context
+                                    .pushNamed(RegistrarLibroWidget.routeName);
+                              },
+                              child: wrapWithModel(
+                                model: _model.adminNavTileModel2,
+                                updateCallback: () => safeSetState(() {}),
+                                child: AdminNavTileWidget(
+                                  icon: Icon(
+                                    Icons.add_box_rounded,
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    size: 24.0,
+                                  ),
+                                  target: 'RegisterNewBook',
+                                  title: 'Registrar libro',
                                 ),
-                                target: 'RegisterNewBook',
-                                title: 'Registrar libro',
                               ),
                             ),
                           ].divide(SizedBox(height: 8.0)),
