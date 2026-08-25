@@ -161,7 +161,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         .labelMedium
                                         .fontStyle,
                                   ),
-                          hintText: 'Ejemplo Ejemplo',
                           hintStyle:
                               FlutterFlowTheme.of(context).labelMedium.override(
                                     font: GoogleFonts.inter(

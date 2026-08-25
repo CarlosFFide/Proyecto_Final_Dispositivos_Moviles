@@ -4,6 +4,7 @@ import '/components/admin_stat/admin_stat_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -192,6 +193,39 @@ class _PanelAdministradorWidgetState extends State<PanelAdministradorWidget> {
                                     .fontStyle,
                                 lineHeight: 1.2,
                               ),
+                        ),
+                        Container(
+                          width: 100.0,
+                          height: 20.0,
+                          child: custom_widgets.SaludoHorario(
+                            width: 100.0,
+                            height: 20.0,
+                          ),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional(1.0, 0.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 100.0,
+                                height: 20.0,
+                                child: custom_widgets.FechaActual(
+                                  width: 100.0,
+                                  height: 20.0,
+                                ),
+                              ),
+                              Container(
+                                width: 100.0,
+                                height: 20.0,
+                                child: custom_widgets.RelojActual(
+                                  width: 100.0,
+                                  height: 20.0,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         Align(
                           alignment: AlignmentDirectional(0.0, 0.0),
